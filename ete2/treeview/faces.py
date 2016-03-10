@@ -1627,7 +1627,7 @@ class SeqMotifFace(StaticItemFace):
     def __init__(self, seq=None, motifs=None, seqtype="aa",
                  intermotif_format="line", seqtail_format="blockseq",
                  seq_format="blockseq", scale_factor=1, shape="()", height=10, width=10,
-                 fgcolor='slategrey', bgcolor='slategrey', gapcolor='black'):
+                 fgcolor='slategrey', bgcolor='slategrey', gapcolor='black',aafg=_aafgcolors,aabg=_aabgcolors):
 
         StaticItemFace.__init__(self, None)
         self.seq  = seq or []
@@ -1642,8 +1642,8 @@ class SeqMotifFace(StaticItemFace):
         self.seqtail_format = seqtail_format
         self.seq_format = seq_format
         if seqtype == "aa":
-            self.fg = _aafgcolors
-            self.bg = _aabgcolors
+            self.fg = aafg
+            self.bg = aabg
         elif seqtype == "nt":
             self.fg = _ntfgcolors
             self.bg = _ntbgcolors
