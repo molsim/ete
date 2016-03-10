@@ -1497,7 +1497,7 @@ class QGraphicsRoundRectItem(QGraphicsRectItem):
 
 class SequenceItem(QGraphicsRectItem):
     def __init__(self, seq, seqtype="aa", poswidth=1, posheight=10,
-                 draw_text=False):
+                 draw_text=False,aafg=_aafgcolors,aabg=_aabgcolors):
         QGraphicsRectItem.__init__(self)
         self.seq = seq
         self.seqtype = seqtype
@@ -1507,8 +1507,8 @@ class SequenceItem(QGraphicsRectItem):
             self.poswidth = poswidth
         self.draw_text = draw_text
         if seqtype == "aa":
-            self.fg = _aafgcolors
-            self.bg = _aabgcolors
+            self.fg = aafg
+            self.bg = aabg
         elif seqtype == "nt":
             self.fg = _ntfgcolors
             self.bg = _ntbgcolors
@@ -1523,7 +1523,7 @@ class SequenceItem(QGraphicsRectItem):
             if x >= current_pixel:
                 if self.draw_text and self.poswidth >= 8:
                     br = QBrush(QColor(self.bg.get(letter, "white")))                    
-                    p.setPen(blackPen)
+                    p.setPen(QPen(QColor(self.bg.get(letter, "white"))))
                     p.fillRect(x, 0, self.poswidth, self.posheight, br)
                     qfont.setPixelSize(min(self.posheight, self.poswidth))
                     p.setFont(qfont)
@@ -1788,16 +1788,17 @@ class SeqMotifFace(StaticItemFace):
                 i = QGraphicsRectItem(0, 0, w, h)
             elif typ == "()":
                 i = QGraphicsRoundRectItem(0, 0, w, h)
-                
+
             elif typ == "seq" and self.seq:
+                aa=['A','R','N','D','C','Q','E','G','H','I','L','K','M','F','P','S','T','W','Y','V','B','Z','X','.','-']
                 i = SequenceItem(self.seq[seq_start:seq_end+1],
                                  poswidth=wf,
-                                 posheight=h, draw_text=True)
+                                 posheight=h, draw_text=True,aabg=self.bg if bg==None else {i:bg for i in aa},aafg=self.fg if fg==None else {i:fg for i in aa})
                 w = i.rect().width()
                 h = i.rect().height()
             elif typ == "compactseq" and self.seq:
                 i = SequenceItem(self.seq[seq_start:seq_end+1], poswidth=1*self.scale_factor,
-                                 posheight=h, draw_text=False)
+                                 posheight=h, draw_text=False,aabg=self.bg,aafg=self.fg)
                 w = i.rect().width() 
                 h = i.rect().height()
             else:
