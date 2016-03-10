@@ -1523,7 +1523,7 @@ class SequenceItem(QGraphicsRectItem):
             if x >= current_pixel:
                 if self.draw_text and self.poswidth >= 8:
                     br = QBrush(QColor(self.bg.get(letter, "white")))                    
-                    p.setPen(QPen(QColor(self.bg.get(letter, "white"))))
+                    p.setPen(QPen(QColor(self.fg.get(letter, "white"))))
                     p.fillRect(x, 0, self.poswidth, self.posheight, br)
                     qfont.setPixelSize(min(self.posheight, self.poswidth))
                     p.setFont(qfont)
